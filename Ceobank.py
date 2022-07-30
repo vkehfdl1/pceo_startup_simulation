@@ -106,6 +106,7 @@ class ceobank():
         1 : after series A
         2 : after sereis B
         """
+        # 6:20 팀 이름에 따라 반드시 수정하세요!
         if mode >= 1:
             if (self.team_data.loc[lambda x: x.content=="1차 투자금"].income.values == self.individual_data.iloc[:,6:20].sum(axis=0).values).sum() == len(self.team_list):
                 print("1차 투자금 개인 및 팀 연동 문제 없음")
