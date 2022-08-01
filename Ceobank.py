@@ -126,7 +126,7 @@ class ceobank():
 
             df = self.individual_data.copy()
             df = df.fillna(0)
-            for i in range(len(data.team_list)):
+            for i in range(len(self.team_list)):
                 if len((df.iloc[:,i+6] + df.iloc[:,i+20]).loc[lambda x : x > 500000]) != 0:
                     print("*******특정 기업 투자 상한선 초과 오류 발생*******")
         
