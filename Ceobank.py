@@ -3,12 +3,39 @@ import pandas as pd
 from glob import glob
 import os
 from tqdm import tqdm
+import zipfile
+import tempfile
 
 
 class ceobank:
     def __init__(self, individual_path, team_path):
         self.individual_file_list = sorted(glob(os.path.join(individual_path, "*.xlsx")))
         self.team_file_list = sorted(glob(os.path.join(team_path, "*.xlsx")))
+
+    @classmethod
+    def load_from_zip(cls, individual_zipfile, team_zipfile):
+        # check zipfile filetype
+        if os.path.splitext(team_zipfile)[-1] != '.zip':
+            raise ValueError("team_zipfile must be zip file")
+        if os.path.splitext(individual_zipfile)[-1] != '.zip':
+            raise ValueError("individual_zipfile must be zip file")
+
+        # check if file exists
+        if not os.path.exists(team_zipfile):
+            raise FileNotFoundError("team_zipfile not exists")
+        if not os.path.exists(individual_zipfile):
+            raise FileNotFoundError("individual_zipfile not exists")
+
+        # unzip
+        team_dir = tempfile.TemporaryDirectory()
+        individual_dir = tempfile.TemporaryDirectory()
+        zipfile.ZipFile(team_zipfile).extractall(team_dir.name)
+        zipfile.ZipFile(individual_zipfile).extractall(individual_dir.name)
+
+        bank = ceobank(individual_dir.name, team_dir.name)
+        bank.load()
+        return bank
+
 
     def load(self):
         team_data = []
