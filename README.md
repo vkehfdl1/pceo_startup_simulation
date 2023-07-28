@@ -6,6 +6,13 @@
 ## Installation
 이 git 저장소를 clone하여 python3 환경에서 import하여 사용하세요. pandas, numpy, tqdm이 필요합니다.
 
+## QuickStart
+``` shell
+python main.py --mode={mode} --individual_zipfile={individual zipfile filepath} --team_zipfile={team zipfile filepath}
+```
+위 코드를 터미널에서 실행하면 로드, 체크, zip 파일 경로에 결과 파일 저장까지 할 수 있습니다.
+
+
 ## Usage
 먼저 씨오뱅크에서 다운로드받은 팀 회계장부 및 개인 회계장부 zip 파일의 경로를 파일까지 아래 코드에 입력합니다.
 
