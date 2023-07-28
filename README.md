@@ -12,6 +12,7 @@
 ``` python
 from Ceobank import ceobank
 data = ceobank('individual_path', 'team_path')
+data.load()
 ```
 'individual_path'에는 개인 회계장부 엑셀 파일들이, 'team_path'에는 팀 회계장부 엑셀 파일들이 들어있어야 합니다. 
 
