@@ -7,14 +7,14 @@
 이 git 저장소를 clone하여 python3 환경에서 import하여 사용하세요. pandas, numpy, tqdm이 필요합니다.
 
 ## Usage
-먼저 씨오뱅크에서 다운로드받은 팀 회계장부 및 개인 회계장부 zip 파일을 각기 다른 경로에 압축을 풀어줍니다. 
+먼저 씨오뱅크에서 다운로드받은 팀 회계장부 및 개인 회계장부 zip 파일의 경로를 파일까지 아래 코드에 입력합니다.
 
 ``` python
 from Ceobank import ceobank
-data = ceobank('individual_path', 'team_path')
-data.load()
+data = ceobank.load_from_zip('개인 회계장부 zip 파일 경로', '팀 회계장부 zip 파일 경로')
 ```
-'individual_path'에는 개인 회계장부 엑셀 파일들이, 'team_path'에는 팀 회계장부 엑셀 파일들이 들어있어야 합니다. 
+
+---
 
 ``` python
 data.download_team_csv('저장 경로 및 파일 이름')
