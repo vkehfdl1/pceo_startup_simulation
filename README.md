@@ -8,9 +8,10 @@
 
 ## QuickStart
 ``` shell
-python main.py --mode={mode} --individual_zipfile={individual zipfile filepath} --team_zipfile={team zipfile filepath}
+python main.py --mode={mode} --root_folder={root_folder}
 ```
-위 코드를 터미널에서 실행하면 로드, 체크, zip 파일 경로에 결과 파일 저장까지 할 수 있습니다.
+
+위 코드를 터미널에서 실행하면 로드, 체크, 결과 파일 저장까지 root_folder 경로에 할 수 있습니다.
 
 
 ## Usage
@@ -19,6 +20,16 @@ python main.py --mode={mode} --individual_zipfile={individual zipfile filepath} 
 ``` python
 from Ceobank import ceobank
 data = ceobank.load_from_zip('개인 회계장부 zip 파일 경로', '팀 회계장부 zip 파일 경로')
+```
+
+아래 코드를 실행하면 서버에서 직접 다운로드 받을 수 있습니다.
+단, 이 경우 .env 파일에 Bearer Token과 타겟하는 id를 입력해야 합니다.
+크롬의 개발자 모드 네트워크 탭을 실행시켜 놓은 상태로, 다운로드 버튼을 클릭하면 Request Headers에 Bearer Token이 있습니다.
+또한, Payload 탭에서 클릭한 id list를 확인할 수 있습니다.
+
+``` python
+from Ceobank import ceobank
+data = ceobank.load_from_server(individual_start_id='개인 회계장부 시작 id', team_start_id='팀 회계장부 시작 id', individual_end_id='개인 회계장부 끝 id', team_end_id='팀 회계장부 끝 id')
 ```
 
 ---
