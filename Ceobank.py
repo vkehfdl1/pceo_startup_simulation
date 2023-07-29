@@ -39,12 +39,11 @@ class ceobank:
         return bank
 
     @classmethod
-    def load_from_server(cls, root_folder: str, individual_start_id: int = 967, individual_end_id: int = 1041,
+    def load_from_server(cls, individual_start_id: int = 967, individual_end_id: int = 1041,
                          team_start_id: int = 117, team_end_id: int = 127):  # need to edit for your target ids
         individual_zip_filename = "individual.zip"
         team_zip_filename = "team.zip"
-        if not os.path.exists(root_folder):
-            os.mkdir(root_folder)
+        root_folder = tempfile.TemporaryDirectory().name
         server = Server(root_folder)
         print("Downloading individual data...")
         individual_response = server.get_individual_data(
@@ -57,8 +56,8 @@ class ceobank:
         individual_zip_fullpath = os.path.join(root_folder, individual_zip_filename)
         team_zip_fullpath = os.path.join(root_folder, team_zip_filename)
         data = ceobank.load_from_zip(individual_zip_fullpath, team_zip_fullpath)
-        os.remove(individual_zip_fullpath)
-        os.remove(team_zip_fullpath)
+        # os.remove(individual_zip_fullpath)
+        # os.remove(team_zip_fullpath)
         return data
 
     def load(self):
