@@ -6,3 +6,4 @@ matplotlib
 seaborn
 openpyxl
 click
+python-dotenv

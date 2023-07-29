@@ -6,6 +6,8 @@ from tqdm import tqdm
 import zipfile
 import tempfile
 
+from server import Server
+
 
 class ceobank:
     def __init__(self, individual_path, team_path):
@@ -36,6 +38,27 @@ class ceobank:
         bank.load()
         return bank
 
+    @classmethod
+    def load_from_server(cls, individual_start_id: int = 967, individual_end_id: int = 1041,
+                         team_start_id: int = 117, team_end_id: int = 127):  # need to edit for your target ids
+        individual_zip_filename = "individual.zip"
+        team_zip_filename = "team.zip"
+        root_folder = tempfile.TemporaryDirectory().name
+        server = Server(root_folder)
+        print("Downloading individual data...")
+        individual_response = server.get_individual_data(
+            [i for i in range(individual_start_id, individual_end_id + 1)])
+        print("Downloading team data...")
+        team_response = server.get_team_data(
+            [i for i in range(team_start_id, team_end_id + 1)])
+        server.save_zipfile(individual_response, individual_zip_filename)
+        server.save_zipfile(team_response, team_zip_filename)
+        individual_zip_fullpath = os.path.join(root_folder, individual_zip_filename)
+        team_zip_fullpath = os.path.join(root_folder, team_zip_filename)
+        data = ceobank.load_from_zip(individual_zip_fullpath, team_zip_fullpath)
+        # os.remove(individual_zip_fullpath)
+        # os.remove(team_zip_fullpath)
+        return data
 
     def load(self):
         team_data = []
