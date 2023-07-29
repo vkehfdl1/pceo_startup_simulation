@@ -223,7 +223,7 @@ class ceobank:
             for manager in self.pivot_team_data.index.get_level_values(0).unique():
                 temp_df = self.pivot_team_data.xs(manager, level=0)
                 temp_df.to_excel(writer, manager)
-            writer.save()
+            writer.close()
         else:
             result = self.team_data.copy()
             result.columns = ['팀이름', '날짜', '항목', '수입', '지출', '잔액', '기타']
