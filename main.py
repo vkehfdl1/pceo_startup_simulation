@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 @click.command()
 @click.option('--root_folder', default='./data', help='root folder to save data')
-@click.option('--mode', default=0, help='mode - 0,1,2, 0 is pre A, 1 is after A, 2 is after B')
+@click.option('--mode', default=1, help='mode - 0,1,2, 0 is pre A, 1 is after A, 2 is after B')
 def main(root_folder, mode):
     data = ceobank.load_from_server()
     pivot: bool = mode > 0

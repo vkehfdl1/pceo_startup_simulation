@@ -115,7 +115,8 @@ class ceobank:
         individual_final[
             'remain'] = individual_final.init_ceo + individual_final.reward - individual_final.init_investment - individual_final.iloc[
                                                                                                                  :,
-                                                                                                                 6:34].sum(
+                                                                                                                 6:6 + (
+                                                                                                                             len(self.team_list) * 2)].sum(
             axis=1)
         self.individual_data = individual_final
 
@@ -145,7 +146,7 @@ class ceobank:
             result = 0
             for j in range(len(self.team_list)):
                 first = individual[j + 6]
-                second = individual[j + 20]
+                second = individual[j + 6 + len(self.team_list)]
                 share = ((first * 1.3) + (second * 1.2)) / invest_list[j]
                 result += (share * remain_list[j])
             individual_result.append(result)
@@ -162,20 +163,21 @@ class ceobank:
         # 6:20 팀 이름에 따라 반드시 수정하세요!
         if mode >= 1:
             if (self.team_data.loc[lambda x: x.content == "1차 투자금"].income.values == self.individual_data.iloc[:,
-                                                                                     6:20].sum(
+                                                                                     6:6 + len(self.team_list)].sum(
                     axis=0).values).sum() == len(self.team_list):
                 print("1차 투자금 개인 및 팀 연동 문제 없음")
             else:
                 print("*******1차 투자금 개인 및 팀 연동 오류 발생*******")
 
-            if (self.individual_data.iloc[:, 6:20] > 500000).sum(axis=0).sum() == 0:
+            if (self.individual_data.iloc[:, 6:6 + len(self.team_list)] > 500000).sum(axis=0).sum() == 0:
                 print("1차 투자 초과투자자 없음")
             else:
                 print("*******1차 투자금 개인 초과 투자 오류 발생*******")
 
         if mode >= 2:
             if (self.team_data.loc[lambda x: x.content == "2차 투자금"].income.values == self.individual_data.iloc[:,
-                                                                                     20:34].sum(
+                                                                                     6 + len(self.team_list):6 + (
+                                                                                             len(self.team_list) * 2)].sum(
                     axis=0).values).sum() == len(self.team_list):
                 print("2차 투자금 개인 및 팀 연동 문제 없음")
             else:
@@ -184,7 +186,7 @@ class ceobank:
             df = self.individual_data.copy()
             df = df.fillna(0)
             for i in range(len(self.team_list)):
-                if len((df.iloc[:, i + 6] + df.iloc[:, i + 20]).loc[lambda x: x > 500000]) != 0:
+                if len((df.iloc[:, i + 6] + df.iloc[:, i + 6 + len(self.team_list)]).loc[lambda x: x > 500000]) != 0:
                     print("*******특정 기업 투자 상한선 초과 오류 발생*******")
 
         if len(self.individual_data.loc[lambda x: x.remain < 0]) == 0:
