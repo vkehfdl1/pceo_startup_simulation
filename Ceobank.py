@@ -5,7 +5,8 @@ import os
 from tqdm import tqdm
 import zipfile
 import tempfile
-
+import matplotlib.pyplot as plt
+import seaborn as sns
 from server import Server
 
 
@@ -71,6 +72,7 @@ class ceobank:
             history, basic = self._load_individual_single(filepath)
             individual_data.append([history, basic])
         print("End Individual Data Load")
+        self.individual_data_raw = individual_data
 
         # Team
         team_final = pd.DataFrame([])
@@ -245,6 +247,39 @@ class ceobank:
         result.columns = result_col
         result.to_csv(filepath, index=False, encoding='utf-8-sig')
         print('save complete')
+
+    def get_investment_graph(self, mode: int):
+        assert (mode in [1, 2])
+        result = []
+        for i, one_data in enumerate(self.individual_data_raw):
+            value = one_data[0]
+            metadata = one_data[1]
+            investment = value.loc[value['content'].map(lambda x: any(s in x for s in self.team_list))]
+            investment = investment.loc[investment['content'].map(lambda x: f'{mode}차' in x)]
+            if not investment.empty:
+                save_col = ['date', 'content', 'outcome']
+                if i == 0:
+                    result = investment[save_col]
+                else:
+                    result = pd.concat([result, investment[save_col]], axis=0)
+
+        result_each_team = []
+        for team_name in self.team_list:
+            each_team_data = result[result['content'].map(lambda x: team_name in x)]
+            each_team_data = each_team_data.sort_values(by='date')
+            each_team_data['acc'] = each_team_data.outcome.cumsum()
+            result_each_team.append(each_team_data)
+
+        final_result = []
+        for i, each_team_data in enumerate(result_each_team):
+            if i == 0:
+                final_result = each_team_data
+            else:
+                final_result = pd.concat([final_result, each_team_data], axis=0)
+        final_result = final_result.sort_values(by='date')
+        plt.figure(figsize=(15, 15))
+        plt.rcParams['font.family'] = 'AppleGothic'
+        sns.lineplot(data=final_result, x='date', y='acc', hue='content')
 
     def _get_day(self, datetime):
         return int((datetime.split('-')[2]).split(' ')[0]) - 18
