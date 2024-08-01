@@ -40,8 +40,8 @@ class ceobank:
         return bank
 
     @classmethod
-    def load_from_server(cls, individual_start_id: int = 967, individual_end_id: int = 1041,
-                         team_start_id: int = 117, team_end_id: int = 127):  # need to edit for your target ids
+    def load_from_server(cls, individual_start_id: int = 1042, individual_end_id: int = 1117,
+                         team_start_id: int = 129, team_end_id: int = 139):  # need to edit for your target ids
         individual_zip_filename = "individual.zip"
         team_zip_filename = "team.zip"
         root_folder = tempfile.TemporaryDirectory().name
@@ -190,6 +190,7 @@ class ceobank:
             for i in range(len(self.team_list)):
                 if len((df.iloc[:, i + 6] + df.iloc[:, i + 6 + len(self.team_list)]).loc[lambda x: x > 500000]) != 0:
                     print("*******특정 기업 투자 상한선 초과 오류 발생*******")
+                    print((df.iloc[:, i + 6] + df.iloc[:, i + 6 + len(self.team_list)]).loc[lambda x: x > 500000])
 
         if len(self.individual_data.loc[lambda x: x.remain < 0]) == 0:
             print("개인 회계 장부 마이너스 없음")
