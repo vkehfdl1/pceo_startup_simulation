@@ -6,6 +6,12 @@
 ## Installation
 이 git 저장소를 clone하여 python3 환경에서 import하여 사용하세요. pandas, numpy, tqdm이 필요합니다.
 
+## Environment setup
+
+먼저 `Ceobank.py`의 `load_from_server`에서 individual 및 team id를 기수에 맞게 변경하세요.
+그리고 `.env` 파일에 `BEARER_TOKEN`을 적어주세요.
+해당 값을 어떻게 구하는지 모르겠으면 저한테 물어보세요.
+
 ## QuickStart
 ``` shell
 python main.py --mode={mode} --root_folder={root_folder}
